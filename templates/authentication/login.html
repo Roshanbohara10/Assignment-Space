@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <button type="submit">Login</button>
+        <a href="{% url 'user_signup' %}">Dont have Account Create</a>
+    </form>
+
+</body>
+
+</html>

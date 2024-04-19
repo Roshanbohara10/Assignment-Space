@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+    <title>Signup</title>
+    <style>
+        .id {
+            color: #7092b1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Signup</h1>
+
+    <form method="post" action="{% url 'user_signup' %}">
+        {% csrf_token %}
+        {% for field in signup_form %}
+        <p>
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+            <span class="error">{{ field.errors|join:", " }}</span>
+            {% endif %}
+        </p>
+        {% endfor %}
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="{% url 'user_login' %}">Login</a></p>
+    </form>
+
+</body>
+
+</html>

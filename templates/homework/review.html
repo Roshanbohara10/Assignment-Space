@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} Assignment Review {% endblock title %}
+
+{% block bodyclass %} review-homework {% endblock bodyclass %}
+
+{% block content %}
+
+
+
+{% if request.user.is_authenticated %}
+<div class="header-div">
+    <div class="col-50"><span>Welcome, {{ request.user.username }}</span></div>
+    <div class="col-50"><a href="{% url 'user_logout' %}">Logout</a></div>
+</div>
+{% endif %}
+
+<p><a href="/">Go back</a></p>
+
+<h2 class="ta-center">Assignment Review</h2>
+
+<table class="review-hom">
+    <tbody>
+        <tr style="width: 50%;padding-left: 100px;">
+            <th style="width: 20%;">Submitted by</th>
+            <th style="width: 45%;">Submission Date</th>
+            <th style="width: 35%;">Assignment</th>
+        </tr>
+        <tr style="width: 50%;padding-right: 100px;">
+            <td>{{homework.student.first_name}} {{homework.student.last_name}}</td>
+            <td>{{homework.submission_date}}</td>
+            <td>{{homework.file}} <span><a style="color: #ffffff;" href="{{ homework.file.url }}" target="_blank">Open File</a></span> | <a style="color: #ffffff;" href="{{ homework.file.url }}" download>Download</a></td>
+        </tr>
+    </tbody>
+    <tfoot class="tfoot">
+        <form method="post">
+            {% csrf_token %}
+            <td>Review</td>
+            <td>
+                {{ form.as_p }}
+            </td>
+            <td>
+                <button type="submit">Submit Review</button>
+            </td>
+        </form>
+    </tfoot>
+</table>
+
+
+{% endblock %}

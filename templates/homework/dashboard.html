@@ -1,0 +1,173 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} DashBoard {% endblock title %}
+
+
+{% block bodyclass %} page-id-allemployees {% endblock bodyclass %}
+
+{% block content %}
+
+<style>
+    .coll-50{
+        background: #bbbbbb;
+        width: 100%;
+    }
+    .dd-flex {
+        display: flex;
+        justify-content: space-between;
+    }
+    .coll-50 span {
+        text-align: center;
+        display: block;
+        background: #808081;
+        padding: 5px;
+    }
+    .coll-50.right {
+        margin-left: .5%;
+    }
+    .coll-50.left {
+        margin-right: .5%;
+    } 
+    .col-inner {
+        padding: 5px;
+    }
+</style>
+<div class="header-div">
+    <div class="col-50"><span>Welcome, {{ request.user.username }}</span></div>
+    <div class="col-50"><a href="{% url 'user_logout' %}">Logout</a></div>
+</div>
+
+
+{% if request.user.is_superuser %}
+<h2 class="ta-center">Student and Teacher List</h2>
+<div class="dd-flex">
+    <div class="coll-50 left">
+        <span>Student List</span>
+        <div class="col-inner">
+            {% if students %}
+            <table>
+                <tr style="text-align: left;">
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Emial</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <td>{{student.first_name}} {{student.last_name}}</td>
+                    <td>{{student.username}}</td>
+                    <td>{{student.email}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <div class="coll-50 right">
+        <span>Teacher List</span>
+        <div class="col-inner">
+            {% if teachers %}
+            <table>
+                <tr style="text-align: left;">
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Emial</th>
+                </tr>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{teacher.first_name}} {{teacher.last_name}}</td>
+                    <td>{{teacher.username}}</td>
+                    <td>{{teacher.email}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+
+<h2 class="ta-center">Assignments</h2>
+{% for group in request.user.groups.all %}
+{% if group.name == 'Student' %}
+{% if homeworks %}
+<table>
+    <thead>
+        <tr style="background: #7092b1;">
+            <th>Subject</th>
+            <th>File</th>
+            <th>Submitted Date</th>
+            <th colspan="3">Action</th>
+        </tr>
+    </thead>
+    {% for homework in homeworks %}
+    <tr class="tb-tr">
+        <td>{{homework.subject}}</td>
+        <td>{{homework.file}}</td>
+        <td>{{homework.submission_date}}</td>
+        <td><a href="{% url 'homework' id=homework.id %}">View</a></td>
+        <td><a href="{% url 'delete_object' id=homework.id %}">Delete</a></td>
+        <td>
+            {% if homework.viewed == True %}
+            <a href="#"><img class="noti-icon" src="{% static 'img/check.png' %}" alt="Example Image"
+                    title="Teacher Review Viewed"></a>
+            {% elif homework.status == 'New' %}
+            <a href="#"><img class="noti-icon" src="{% static 'img/new.png' %}" alt="Example Image"
+                    title="New Homework"></a>
+            {% elif homework.status == 'Reviewed' %}
+            <a href="{% url 'homework' id=homework.id %}"><img class="noti-icon" src="{% static 'img/active.png' %}"
+                    alt="Example Image" title="Check for Review"></a>
+            {% elif homework.status == 'Pending' %}
+            <a href="#"><img class="noti-icon" src="{% static 'img/delay.png' %}" alt="Example Image"
+                    title="viewed by teacher but not reviewed"></a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+{% else %}
+<p class="hm-na ta-center">no Assignments</p>
+{% endif %}
+
+<div class="ta-center" style="margin-top: 15px;">
+    <a href="{% url 'homework_create' %}" class="ah-btn a-backg">add homework</a></div>
+{% else %}
+<table>
+    <thead>
+        <tr style="background: #7092b1;">
+            <th>Student Name</th>
+            <th>File</th>
+            <th>Submitted Date</th>
+            <th colspan="2">Action</th>
+        </tr>
+    </thead>
+    {% for homework in homeworks %}
+    <tr style="background: #b5b5b5;">
+        <td>{{homework.student.first_name}} {{homework.student.last_name}}</td>
+        <td>{{homework.file}}</td>
+        <td>{{homework.submission_date}}</td>
+        <td><a href="{% url 'review_homework' id=homework.id %}">Review</a></td>
+        <td>
+            {% if homework.status == 'Reviewed' %}
+            <a href="{% url 'homework' id=homework.id %}"><img class="noti-icon" src="{% static 'img/check.png' %}"
+                    alt="Example Image"></a>
+            {% elif homework.status == 'Pending' %}
+            <a href="{% url 'homework' id=homework.id %}"><img class="noti-icon" src="{% static 'img/delay.png' %}"
+                    alt="Example Image"></a>
+            {% else %}
+            <a href="{% url 'homework' id=homework.id %}"><img class="noti-icon" src="{% static 'img/new.png' %}"
+                    alt="Example Image"></a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+
+{% endblock %}

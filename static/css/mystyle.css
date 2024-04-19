@@ -1,0 +1,88 @@
+body {
+    background-color: #082d4f;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 90px;
+}
+
+.header-div {
+    background: #7092b1;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+td,
+th {
+    padding: 4px;
+}
+
+.ah-btn {
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.noti-icon {
+    width: 20px;
+}
+
+body {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 90px;
+}
+
+.tb-tr {
+    background: #e1e1e1;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.ta-center {
+    text-align: center;
+}
+
+h2 {
+    color: #b1b1b1;
+}
+
+.a-backg {
+    background: #63707b;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+table {
+    width: 100%;
+}
+
+.hm-na {
+    background: #308b72;
+    color: white;
+    padding: 5px;
+}
+
+
+
+tr {
+    background: #7092b1 !important;
+}
+.coll-33 {
+    width: 33.33%;
+}
+.tfoot label {
+    display: none;
+}
+
+.tfoot textarea{
+    width: -webkit-fill-available;
+    height: 80px;
+    border-radius: 4px;
+}
